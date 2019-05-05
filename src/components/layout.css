@@ -1,0 +1,25 @@
+/* <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,600" rel="stylesheet"> */
+/* This was recommended in a SO answer. Look into css imports.. this is new to me */
+@import url("https://fonts.googleapis.com/css?family=Barlow:400,500,600");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-family: "Barlow", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* -webkit-font-smoothing: antialiased; */
+  /* -moz-osx-font-smoothing: grayscale; */
+}
