@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import GithubLogo from "../images/github.svg"
-import LinkedInLogo from "../images/linkedin.svg"
+import GithubLogo from "./github_logo.js"
+import LinkedInLogo from "./linkedin_logo.js"
 
 const SectionContainer = styled.section`
   height: 90vh;
@@ -9,6 +9,8 @@ const SectionContainer = styled.section`
   background: ${props => props.theme.primaryColor};
 
   #hero__content {
+    display: flex;
+    justify-content: center;
     width: 100vw;
     height: 28rem;
     padding: 0.001rem;
@@ -25,7 +27,7 @@ const SectionContainer = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 9rem;
+    margin-top: 11rem;
     /* background: blue; */
     height: 20rem;
   }
@@ -72,6 +74,7 @@ const SectionContainer = styled.section`
   }
 
   #hero__secondary-title {
+    font-size: 1.4rem;
     margin-top: 1.8rem;
     font-weight: 300;
     color: ${props => props.theme.primaryWhite};
@@ -89,13 +92,15 @@ const hero = () => {
           </h1>
           <div id="hero_logo-container">
             <div>
-              <img className="hero__logo" src={GithubLogo} />
+              <GithubLogo />
+              {/* <img className="hero__logo" src={GithubLogo} /> */}
             </div>
             <div>
-              <img className="hero__logo" src={LinkedInLogo} />
+              <LinkedInLogo />
+              {/* <img className="hero__logo" src={LinkedInLogo} /> */}
             </div>
           </div>
-          <h3 id="hero__secondary-title">Crafting Clean Quality Websites</h3>
+          <h2 id="hero__secondary-title">Crafting Clean Quality Websites</h2>
         </div>
       </div>
     </SectionContainer>
