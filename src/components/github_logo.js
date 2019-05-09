@@ -2,6 +2,9 @@ import React from "react"
 import styled from "styled-components"
 
 const SVG = styled.svg`
+  width: 1.8rem;
+  height: 1.8rem;
+
   #github {
     fill: ${props => props.theme.primaryWhite};
   }
@@ -11,16 +14,21 @@ const SVG = styled.svg`
       fill: ${props => props.theme.accentColor};
     }
   }
+
+  @media only screen and (min-width: 600px) {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  /* For iPad Pro height screens */
+  @media only screen and (min-height: 1366px) {
+    width: 3rem;
+    height: 3rem;
+  }
 `
 
 const GithubLogo = () => (
-  <SVG
-    width="24px"
-    height="24px"
-    viewBox="0 0 24 24"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <SVG viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <g id="Page-1" stroke="none" stroke-width="1">
       <g
         id="Mobile"

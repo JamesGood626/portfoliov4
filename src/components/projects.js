@@ -36,7 +36,10 @@ const SectionContainer = styled.section`
   .project__display-item {
     width: 18rem;
     height: 18rem;
-    background: ${props => props.theme.primaryColor};
+    background: url("https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif");
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
     border-radius: 4px;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.2);
   }
@@ -65,7 +68,16 @@ const SectionContainer = styled.section`
     display: none;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
   }
+
+  @media screen and (min-width: 400px) {
+    .project__display-item {
+      width: 22rem;
+    }
+  }
 `
+{
+  /* <img src="https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif" /> */
+}
 
 const projects = () => {
   return (

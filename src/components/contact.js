@@ -19,7 +19,7 @@ const SectionContainer = styled.section`
     display: flex;
     flex-direction: column;
     width: 80%;
-    max-width: 18rem;
+    max-width: 22rem;
 
     .contact__form-input {
       background: rgba(0, 0, 0, 0);

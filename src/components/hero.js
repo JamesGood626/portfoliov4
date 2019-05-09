@@ -4,7 +4,7 @@ import GithubLogo from "./github_logo.js"
 import LinkedInLogo from "./linkedin_logo.js"
 
 const SectionContainer = styled.section`
-  height: 90vh;
+  height: 100vh;
   width: 100vw;
   background: ${props => props.theme.primaryColor};
 
@@ -27,7 +27,7 @@ const SectionContainer = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 11rem;
+    margin-top: 26vmax;
     /* background: blue; */
     height: 20rem;
   }
@@ -44,20 +44,18 @@ const SectionContainer = styled.section`
     position: relative;
     z-index: 9001;
     color: ${props => props.theme.primaryWhite};
-    font-size: 5rem;
+    font-size: 4rem;
   }
 
   #hero__lastname {
     position: absolute;
     top: 0%;
-    /* reference when implementing large screen media queries */
-    /* Or better yet... just implement ems */
-    /* calc(50% - 1.2rem higher than the set font size) centers lastname */
-    left: calc(50% - 10.2rem);
+    /* Necessary for centering lastname */
+    left: calc(50% - 9.2rem);
     /* background: lime; */
     color: ${props => props.theme.accentColor};
     opacity: 0.8;
-    font-size: 9rem;
+    font-size: 8rem;
   }
 
   #hero_logo-container {
@@ -68,16 +66,84 @@ const SectionContainer = styled.section`
     margin-top: 1.8rem;
   }
 
-  .hero__logo {
-    /* Probably switch these to ems later */
-    width: 1.8rem;
-  }
-
   #hero__secondary-title {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-top: 1.8rem;
     font-weight: 300;
     color: ${props => props.theme.primaryWhite};
+  }
+
+  @media screen and (min-width: 400px) {
+    .hero__firstname {
+      font-size: 5rem;
+    }
+
+    .hero__lastname {
+      font-size: 9rem;
+      left: calc(50% - 10.2rem);
+    }
+  }
+
+  /* Could add more media queries for larger screens.... If only
+  I had one laying around to see the results */
+  @media only screen and (min-width: 600px) {
+    #hero_content-jankfix-container {
+      margin-top: 26vmin;
+    }
+
+    #hero__main-title {
+      /* Pushes the icons down */
+      margin-bottom: 3rem;
+    }
+
+    #hero__firstname {
+      font-size: 6.4rem;
+    }
+
+    #hero__lastname {
+      /* Necessary for centering lastname */
+      left: calc(50% - 13.2rem);
+      font-size: 11rem;
+    }
+
+    #hero_logo-container {
+      width: 7rem;
+    }
+
+    #hero__secondary-title {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* For iPad Pro height screens */
+  @media only screen and (min-height: 1366px) {
+    #hero__main-title {
+      /* Pushes the icons down */
+      margin-bottom: 5rem;
+    }
+
+    #hero_content-jankfix-container {
+      margin-top: 24rem;
+      height: 26rem;
+    }
+
+    #hero__firstname {
+      font-size: 7.2rem;
+    }
+
+    #hero__lastname {
+      /* Necessary for centering lastname */
+      left: calc(50% - 14.8rem);
+      font-size: 13rem;
+    }
+
+    #hero__secondary-title {
+      font-size: 2rem;
+    }
+
+    #hero_logo-container {
+      width: 9rem;
+    }
   }
 `
 

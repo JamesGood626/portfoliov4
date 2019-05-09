@@ -16,7 +16,7 @@ const SectionContainer = styled.section`
     width: 80%;
     max-width: 30rem;
     background: ${props => props.theme.primaryWhite};
-    padding: 1.8rem 3rem;
+    padding: 1.4rem 2.2rem;
     border-radius: 4px;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.2);
 
@@ -29,6 +29,12 @@ const SectionContainer = styled.section`
     p {
       color: #707070;
       line-height: 1.4rem;
+    }
+  }
+
+  @media screen and (min-width: 400px) {
+    #about__content {
+      padding: 1.8rem 3rem;
     }
   }
 `
