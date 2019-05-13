@@ -159,11 +159,9 @@ const hero = () => {
           <div id="hero_logo-container">
             <div>
               <GithubLogo />
-              {/* <img className="hero__logo" src={GithubLogo} /> */}
             </div>
             <div>
               <LinkedInLogo />
-              {/* <img className="hero__logo" src={LinkedInLogo} /> */}
             </div>
           </div>
           <h2 id="hero__secondary-title">Crafting Clean Quality Websites</h2>

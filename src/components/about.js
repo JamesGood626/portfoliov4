@@ -13,7 +13,7 @@ const SectionContainer = styled.section`
     flex-direction: column;
     align-items: center;
     transform: translateY(-4rem);
-    width: 80%;
+    width: 80vw;
     max-width: 30rem;
     background: ${props => props.theme.primaryWhite};
     padding: 1.4rem 2.2rem;

@@ -6,7 +6,8 @@ const SectionContainer = styled.section`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 60vh;
+  padding-bottom: 4rem;
+  /* height: 60vh; */
   /* background: lime; */
 
   h3 {
@@ -18,8 +19,8 @@ const SectionContainer = styled.section`
   #contact__form {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    max-width: 22rem;
+    width: 80vw;
+    max-width: 30rem;
 
     .contact__form-input {
       background: rgba(0, 0, 0, 0);
@@ -29,11 +30,11 @@ const SectionContainer = styled.section`
     label {
       font-weight: 600;
       color: ${props => props.theme.primaryColor};
-      transform: translate(0.4rem, 1.5rem);
+      transform: translate(0.6rem, 1.7rem);
     }
 
     input {
-      height: 1.8rem;
+      height: 2.2rem;
     }
 
     textarea {
