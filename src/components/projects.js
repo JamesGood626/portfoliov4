@@ -1,6 +1,13 @@
-import React, { useState, createRef } from "react"
+import React, { useState, useEffect, createRef } from "react"
 import styled from "styled-components"
+import { TweenLite } from "gsap"
+import debounce from "lodash.debounce"
+import ScrollToPlugin from "gsap/ScrollToPlugin"
 import Carousel from "nuka-carousel"
+
+// If webAnimation API Suffices cross-browser
+// Use this for scrollTo:
+// https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo
 
 // Carousel styles won't work w/ animation..
 // gif is clipped by .slider-frame
@@ -164,11 +171,11 @@ const BackgroundBlur = styled.div`
   left: 0%;
   right: 0%;
   bottom: 0%;
-  /* z-index: 9000; */
+  z-index: 9000;
   width: 100vw;
-  height: 100vh;
+  height: ${props => `${props.bodyHeight}px`};
   background: ${props => props.theme.primaryColor};
-  opacity: 0.5;
+  opacity: 0.7;
 `
 
 const flip = (el, start, end) => {
@@ -271,7 +278,15 @@ const handleAnimation = (expanded, projectImageRef) => {
   }
 }
 
-const toggleExpand = (index, expandedArr, setExpandedArr, projectImageRef) => {
+const toggleExpand = (
+  index,
+  expandedArr,
+  setExpandedArr,
+  projectImageRef,
+  projectContainerRef
+) => {
+  const { offsetTop } = projectContainerRef.current
+  TweenLite.to(window, 0.4, { scrollTo: offsetTop })
   let newExpandedArr = []
   const arrLen = expandedArr.length
   let project = expandedArr[index]
@@ -287,8 +302,39 @@ const toggleExpand = (index, expandedArr, setExpandedArr, projectImageRef) => {
   setExpandedArr(newExpandedArr)
 }
 
-const ProjectDisplay = ({ index, gifUrl, expandedArr, setExpandedArr }) => {
-  const [toggle, setToggle] = useState(false)
+const handleScroll = (toggle, projectContainerRef) => {
+  console.log("toggle: ", toggle)
+  if (toggle) {
+    // prevent window from being scrolled past ProjContRef's offsetTop
+    const { offsetTop } = projectContainerRef.current
+    console.log("offsetTop: ", offsetTop)
+    console.log("window.scrollY: ", window.scrollY)
+    if (window.scrollY < offsetTop) {
+      TweenLite.to(window, 0.4, { scrollTo: offsetTop })
+      // window.scrollTo({ top: offsetTop, behavior: "smooth" })
+    }
+  }
+}
+
+const ProjectDisplay = ({
+  index,
+  gifUrl,
+  expandedArr,
+  setExpandedArr,
+  projectContainerRef,
+  toggle,
+  setToggle,
+}) => {
+  useEffect(() => {
+    // let scrollHandler = debounce(function() {
+    //   handleScroll(toggle, projectContainerRef)
+    // }, 10)
+    let scrollHandler = e => handleScroll(toggle, projectContainerRef)
+    window.addEventListener("scroll", scrollHandler)
+    return () => {
+      window.removeEventListener("scroll", scrollHandler)
+    }
+  }, [toggle])
   const projectImageRef = createRef(null)
   const { expanded } = expandedArr[index]
 
@@ -296,7 +342,7 @@ const ProjectDisplay = ({ index, gifUrl, expandedArr, setExpandedArr }) => {
   // W/ a function that will prevent the user from scrolling higher
   // than the top of the project sections boundingClientRect when
   // toggle is true.
-  // Also, when toggle is toggled from false to true. Animate the scrollPos
+  // Also, when toggled -> animate the scrollPos
   // to the project section's top.
   return (
     <>
@@ -314,7 +360,13 @@ const ProjectDisplay = ({ index, gifUrl, expandedArr, setExpandedArr }) => {
           className="project__display-item-title project__display-item-title"
           onClick={e => {
             setToggle(!toggle)
-            toggleExpand(index, expandedArr, setExpandedArr, projectImageRef)
+            toggleExpand(
+              index,
+              expandedArr,
+              setExpandedArr,
+              projectImageRef,
+              projectContainerRef
+            )
           }}
         >
           <span>
@@ -332,7 +384,6 @@ const ProjectDisplay = ({ index, gifUrl, expandedArr, setExpandedArr }) => {
           </div>
         </div>
       </ProjectContainer>
-      {toggle && <BackgroundBlur onScroll={e => console.log("Scrollin")} />}
     </>
   )
 }
@@ -340,24 +391,37 @@ const ProjectDisplay = ({ index, gifUrl, expandedArr, setExpandedArr }) => {
 // "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif"
 const projects = () => {
   const [expandedArr, setExpandedArr] = useState(projectUrls)
+  const [totalBodyHeight, setTotalBodyHeight] = useState(0)
+  const [toggle, setToggle] = useState(false)
+  const projectContainerRef = createRef(null)
+  useEffect(() => {
+    setTotalBodyHeight(document.body.clientHeight)
+  }, [])
+
   return (
-    <SectionContainer>
-      <div id="project__content">
-        <h3>Projects</h3>
-        <div id="project__display">
-          {/* <Carousel> */}
-          {expandedArr.map(({ url }, index) => (
-            <ProjectDisplay
-              index={index}
-              gifUrl={url}
-              expandedArr={expandedArr}
-              setExpandedArr={setExpandedArr}
-            />
-          ))}
-          {/* </Carousel> */}
+    <>
+      <SectionContainer ref={projectContainerRef}>
+        <div id="project__content">
+          <h3>Projects</h3>
+          <div id="project__display">
+            {/* <Carousel> */}
+            {expandedArr.map(({ url }, index) => (
+              <ProjectDisplay
+                index={index}
+                gifUrl={url}
+                expandedArr={expandedArr}
+                setExpandedArr={setExpandedArr}
+                projectContainerRef={projectContainerRef}
+                toggle={toggle}
+                setToggle={setToggle}
+              />
+            ))}
+            {/* </Carousel> */}
+          </div>
         </div>
-      </div>
-    </SectionContainer>
+      </SectionContainer>
+      {toggle && <BackgroundBlur bodyHeight={totalBodyHeight} />}
+    </>
   )
 }
 
