@@ -97,7 +97,12 @@ const SectionContainer = styled.section`
     max-width: 50rem;
     height: 14rem;
     font-size: 1rem;
-    padding: 2rem;
+    line-height: 1.4rem;
+    letter-spacing: 0.05rem;
+    color: ${props => props.theme.textGrey};
+    padding: 1.8rem;
+    padding-bottom: 0;
+    padding-top: 2.8rem;
     margin-bottom: 4rem;
     display: none;
     border-radius: 4px;
@@ -125,7 +130,6 @@ const SectionContainer = styled.section`
   } */
 
   .project__display-content--expanded {
-    /* height: 20rem; */
     background: ${props => props.theme.primaryWhite};
     display: block;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
@@ -156,6 +160,7 @@ const ProjectContainer = styled.div`
     position: absolute;
     z-index: 9020;
     /* top: 76%; */
+    color: ${props => props.theme.primaryColor};
     background: ${props => props.theme.primaryWhite};
     border-radius: 4px;
     padding: 1rem 2rem;
@@ -411,7 +416,15 @@ const ProjectDisplay = ({
               : "project__display-content project__display-content--contracted"
           }
         >
-          <p>Some Lorem Ipsum</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidata non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </p>
         </div>
       </ProjectContainer>
     </>

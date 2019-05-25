@@ -2,6 +2,8 @@ import React from "react"
 import styled from "styled-components"
 
 const SectionContainer = styled.section`
+  position: relative;
+  z-index: 8010;
   display: flex;
   justify-content: center;
   width: 100vw;
@@ -16,25 +18,21 @@ const SectionContainer = styled.section`
     width: 80vw;
     max-width: 30rem;
     background: ${props => props.theme.primaryWhite};
-    padding: 1.4rem 2.2rem;
+    padding: 1.8rem 2.4rem;
     border-radius: 4px;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.2);
 
     h3 {
       font-size: 1.6rem;
       color: ${props => props.theme.primaryColor};
-      margin-bottom: 2rem;
+      margin-bottom: 1.2rem;
     }
 
     p {
       color: #707070;
       line-height: 1.4rem;
-    }
-  }
-
-  @media screen and (min-width: 400px) {
-    #about__content {
-      padding: 1.8rem 3rem;
+      letter-spacing: 0.05rem;
+      color: ${props => props.theme.textGrey};
     }
   }
 `

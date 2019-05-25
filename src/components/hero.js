@@ -70,6 +70,7 @@ const SectionContainer = styled.section`
     font-size: 1.2rem;
     margin-top: 1.8rem;
     font-weight: 300;
+    letter-spacing: 0.05rem;
     color: ${props => props.theme.primaryWhite};
   }
 

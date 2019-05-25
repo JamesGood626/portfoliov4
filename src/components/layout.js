@@ -18,6 +18,7 @@ const theme = {
   primaryColor: "#001657",
   accentColor: "#07CEFF",
   primaryWhite: "#FFFEFE",
+  textGrey: "#707070",
 }
 
 const Footer = styled.footer`
