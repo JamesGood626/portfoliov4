@@ -31,8 +31,7 @@ const SectionContainer = styled.section`
   position: relative;
   z-index: 9001;
   width: 100vw;
-  /* background: lime; */
-  padding-bottom: 4rem;
+  margin-bottom: 4rem;
   height: 26rem;
 
   #project__content {
@@ -95,13 +94,12 @@ const SectionContainer = styled.section`
     z-index: 9010;
     width: 90vw;
     max-width: 50rem;
-    height: 14rem;
-    font-size: 1rem;
+    height: auto;
+    font-size: 0.9rem;
     line-height: 1.4rem;
     letter-spacing: 0.05rem;
     color: ${props => props.theme.textGrey};
     padding: 1.8rem;
-    padding-bottom: 0;
     padding-top: 2.8rem;
     margin-bottom: 4rem;
     display: none;
@@ -112,6 +110,7 @@ const SectionContainer = styled.section`
 
   @media screen and (min-width: 600px) {
     .project__display-content {
+      font-size: 1rem;
       transform: translateY(0);
     }
   }
@@ -201,7 +200,12 @@ const BackgroundBlur = styled.div`
   width: 100vw;
   height: ${props => `${props.bodyHeight}px`};
   background: ${props => props.theme.primaryColor};
-  opacity: 0.7;
+  /* opacity: 0.7; */
+  /* visibility: ${props => (props.toggle ? "visible" : "hidden")}; */
+  transition: ${props =>
+    props.visible
+      ? "opacity 0.4s ease-in"
+      : "visibility 0.2s 0.4s ease-in, opacity 0.4s ease-in"};
 `
 
 const flip = (el, start, end) => {
@@ -469,7 +473,11 @@ const projects = () => {
           </div>
         </div>
       </SectionContainer>
-      {toggle && <BackgroundBlur bodyHeight={totalBodyHeight} />}
+      <BackgroundBlur
+        className={toggle ? "modal--visible" : "modal--hidden"}
+        visible={toggle}
+        bodyHeight={totalBodyHeight}
+      />
     </>
   )
 }

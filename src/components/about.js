@@ -30,9 +30,16 @@ const SectionContainer = styled.section`
 
     p {
       color: #707070;
+      font-size: 0.9rem;
       line-height: 1.4rem;
       letter-spacing: 0.05rem;
       color: ${props => props.theme.textGrey};
+    }
+
+    @media screen and (min-width: 600px) {
+      p {
+        font-size: 1rem;
+      }
     }
   }
 `
