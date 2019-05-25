@@ -5,6 +5,11 @@ import debounce from "lodash.debounce"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 import Carousel from "nuka-carousel"
 
+// TODO:
+// 1. Fix weird bug that causes crash when toggling -> followed by scrolling
+//    immediately after the toggle. Next toggle after that sequence of events
+//    crashes app.. "Cannot read property 'offsetTop' of null" (has something
+//    to do w/ useEffect for sure...)
 // If webAnimation API Suffices cross-browser
 // Use this for scrollTo:
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollTo
@@ -84,23 +89,39 @@ const SectionContainer = styled.section`
     }
   }
 
-  .project_display-item--contracted {
+  .project_display-item {
     position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+    top: 34rem;
+    z-index: 9010;
+    width: 90vw;
+    max-width: 50rem;
+    font-size: 1rem;
+    padding: 2rem;
+    transform: scaleY(20rem);
+    /* transition: height 3s ease-out; */
+    animation: reveal 1s ease-in;
+  }
+
+  @keyframes reveal {
+    from {
+      /* transform: translateY(10rem); */
+      transform: scaleY(0);
+    }
+
+    /* to {
+      transform: translateY(-10rem);
+    } */
+  }
+
+  .project_display-item--contracted {
     background: orange;
     display: none;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
   }
 
   .project_display-item--expanded {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
     height: 20rem;
-    background: orange;
+    background: blue;
     display: block;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
   }
@@ -122,6 +143,7 @@ const ProjectTitle = styled.div`
 const ProjectContainer = styled.div`
   position: relative;
   z-index: 9002;
+
   .project__display-item {
     background: ${props => `url(${props.gifUrl})`};
     background-position: center; /* Center the image */
@@ -134,6 +156,7 @@ const ProjectContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     position: absolute;
+    z-index: 9020;
     /* top: 76%; */
     background: ${props => props.theme.primaryWhite};
     border-radius: 4px;
@@ -303,12 +326,12 @@ const toggleExpand = (
 }
 
 const handleScroll = (toggle, projectContainerRef) => {
-  console.log("toggle: ", toggle)
-  if (toggle) {
+  // the ref ends up null whenever I scroll down to the project content paragraph section and then
+  // press the project title in order to trigger the animation. Odd bug that occured
+  // adding projectContainerRef.current !== null is necessary to prevent it.
+  if (toggle && projectContainerRef.current !== null) {
     // prevent window from being scrolled past ProjContRef's offsetTop
     const { offsetTop } = projectContainerRef.current
-    console.log("offsetTop: ", offsetTop)
-    console.log("window.scrollY: ", window.scrollY)
     if (window.scrollY < offsetTop) {
       TweenLite.to(window, 0.4, { scrollTo: offsetTop })
       // window.scrollTo({ top: offsetTop, behavior: "smooth" })
@@ -326,15 +349,17 @@ const ProjectDisplay = ({
   setToggle,
 }) => {
   useEffect(() => {
+    console.log("useEffect called: ", projectContainerRef)
     // let scrollHandler = debounce(function() {
     //   handleScroll(toggle, projectContainerRef)
     // }, 10)
-    let scrollHandler = e => handleScroll(toggle, projectContainerRef)
+    const scrollHandler = e => handleScroll(toggle, projectContainerRef)
     window.addEventListener("scroll", scrollHandler)
     return () => {
+      console.log("useEffect cleanup called: ", projectContainerRef)
       window.removeEventListener("scroll", scrollHandler)
     }
-  }, [toggle])
+  }, [toggle, projectContainerRef])
   const projectImageRef = createRef(null)
   const { expanded } = expandedArr[index]
 
@@ -372,16 +397,16 @@ const ProjectDisplay = ({
           <span>
             <h4>Project Title</h4>
           </span>
-          <div
-            className="project_display-item--contracted"
-            // className={
-            //   expanded
-            //     ? "project_display-item--expanded"
-            //     : "project_display-item--contracted"
-            // }
-          >
-            <p>Some Lorem Ipsum</p>
-          </div>
+        </div>
+        <div
+          // className="project_display-item project_display-item--contracted"
+          className={
+            expanded
+              ? "project_display-item project_display-item--expanded"
+              : "project_display-item project_display-item--contracted"
+          }
+        >
+          <p>Some Lorem Ipsum</p>
         </div>
       </ProjectContainer>
     </>
