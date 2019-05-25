@@ -34,7 +34,7 @@ const GithubLogo = () => (
         id="Mobile"
         transform="translate(-126.000000, -257.000000)"
         fill="#FBFFF8"
-        fill-rule="nonzero"
+        fillRule="nonzero"
       >
         <g id="HeroSection" transform="translate(0.000000, -12.000000)">
           <g

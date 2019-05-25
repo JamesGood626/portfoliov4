@@ -34,13 +34,13 @@ const LinkedInLogo = () => (
       stroke="none"
       stroke-width="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g
         id="Mobile"
         transform="translate(-170.000000, -257.000000)"
         fill="#FBFFF8"
-        fill-rule="nonzero"
+        fillRule="nonzero"
       >
         <g id="HeroSection" transform="translate(0.000000, -12.000000)">
           <g

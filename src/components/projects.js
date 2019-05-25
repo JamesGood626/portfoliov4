@@ -95,8 +95,10 @@ const SectionContainer = styled.section`
     z-index: 9010;
     width: 90vw;
     max-width: 50rem;
+    height: 14rem;
     font-size: 1rem;
     padding: 2rem;
+    margin-bottom: 4rem;
     display: none;
     border-radius: 4px;
     transform: translateY(-7rem);
@@ -123,7 +125,7 @@ const SectionContainer = styled.section`
   } */
 
   .project__display-content--expanded {
-    height: 20rem;
+    /* height: 20rem; */
     background: ${props => props.theme.primaryWhite};
     display: block;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
@@ -336,6 +338,11 @@ const handleScroll = (toggle, projectContainerRef) => {
   }
 }
 
+const handleResize = setTotalBodyHeight => {
+  console.log("handling resize")
+  setTotalBodyHeight(document.body.clientHeight)
+}
+
 const ProjectDisplay = ({
   index,
   gifUrl,
@@ -419,6 +426,12 @@ const projects = () => {
   const projectContainerRef = createRef(null)
   useEffect(() => {
     setTotalBodyHeight(document.body.clientHeight)
+    // Throttle this as well.
+    const resizeHandler = () => handleResize(setTotalBodyHeight)
+    window.addEventListener("resize", resizeHandler)
+    return () => {
+      window.removeEventListener("resize", resizeHandler)
+    }
   }, [])
 
   return (

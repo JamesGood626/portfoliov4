@@ -6,6 +6,7 @@
  */
 
 import React from "react"
+import styled from "styled-components"
 import PropTypes from "prop-types"
 import { StaticQuery, graphql } from "gatsby"
 
@@ -18,6 +19,12 @@ const theme = {
   accentColor: "#07CEFF",
   primaryWhite: "#FFFEFE",
 }
+
+const Footer = styled.footer`
+  width: 100vw;
+  height: 6rem;
+  background: ${props => props.theme.primaryColor};
+`
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -36,9 +43,9 @@ const Layout = ({ children }) => (
           <Header siteTitle={data.site.siteMetadata.title} />
           <div>
             <main>{children}</main>
-            <footer>
+            <Footer>
               <p>TM</p>
-            </footer>
+            </Footer>
           </div>
         </>
       </ThemeProvider>
