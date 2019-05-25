@@ -42,7 +42,7 @@ const SectionContainer = styled.section`
 
   #hero__firstname {
     position: relative;
-    z-index: 9001;
+    z-index: 8000;
     color: ${props => props.theme.primaryWhite};
     font-size: 4rem;
   }

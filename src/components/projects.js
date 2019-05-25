@@ -61,7 +61,7 @@ const SectionContainer = styled.section`
     align-items: center;
   }
 
-  .project_image--start {
+  .project__image--start {
     width: 100%;
     background: orange;
   }
@@ -89,7 +89,7 @@ const SectionContainer = styled.section`
     }
   }
 
-  .project_display-item {
+  .project__display-content {
     position: absolute;
     top: 34rem;
     z-index: 9010;
@@ -97,41 +97,37 @@ const SectionContainer = styled.section`
     max-width: 50rem;
     font-size: 1rem;
     padding: 2rem;
-    transform: scaleY(20rem);
-    /* transition: height 3s ease-out; */
-    animation: reveal 1s ease-in;
+    display: none;
+    border-radius: 4px;
+    transform: translateY(-7rem);
+    animation: reveal 0.6s ease-out;
+  }
+
+  @media screen and (min-width: 600px) {
+    .project__display-content {
+      transform: translateY(0);
+    }
   }
 
   @keyframes reveal {
     from {
-      /* transform: translateY(10rem); */
-      transform: scaleY(0);
+      transform: translateY(20rem);
     }
-
-    /* to {
-      transform: translateY(-10rem);
-    } */
   }
 
-  .project_display-item--contracted {
+  /* May play around with this concept in the future */
+  /* .project__display-content--contracted {
     background: orange;
     display: none;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
-  }
+  } */
 
-  .project_display-item--expanded {
+  .project__display-content--expanded {
     height: 20rem;
-    background: blue;
+    background: ${props => props.theme.primaryWhite};
     display: block;
     box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
   }
-
-  /* @media screen and (min-width: 400px) {
-    .project__display-item {
-      width: 80vw;
-      max-width: 30rem;
-    }
-  } */
 `
 
 const ProjectTitle = styled.div`
@@ -203,32 +199,33 @@ const BackgroundBlur = styled.div`
 
 const flip = (el, start, end) => {
   // Get the first position.
-  var first = el.getBoundingClientRect()
+  const first = el.getBoundingClientRect()
 
   // Move it to the end.
   el.classList.remove(start)
   el.classList.add(end)
 
   // Get the last position.
-  var last = el.getBoundingClientRect()
+  const last = el.getBoundingClientRect()
 
   // Move it to the start.
   el.classList.remove(end)
   el.classList.add(start)
 
   // Invert.
-  var invert = first.top - last.top
-  var invertedWidth = first.width / last.width
-  var invertedHeight = first.height / last.height
+  // invert made no difference in the animation...
+  // const invert = first.top - last.top
+  const invertedWidth = first.width / last.width
+  const invertedHeight = first.height / last.height
 
   return {
-    invert,
+    // invert,
     invertedWidth,
     invertedHeight,
   }
 }
 
-const popUp = (el, start, end, invert, invertedWidth, invertedHeight) => {
+const popUp = (el, start, end, invertedWidth, invertedHeight) => {
   // el.classList.remove('start');
   el.classList.remove(start)
   el.classList.add(end)
@@ -248,7 +245,7 @@ const popUp = (el, start, end, invert, invertedWidth, invertedHeight) => {
   )
 }
 
-const popDown = (el, start, end, invert, invertedWidth, invertedHeight) => {
+const popDown = (el, start, end, invertedWidth, invertedHeight) => {
   el.classList.remove(end)
   el.classList.add(start)
   // Go from the inverted position to last.
@@ -271,7 +268,7 @@ const popDown = (el, start, end, invert, invertedWidth, invertedHeight) => {
 const handleAnimation = (expanded, projectImageRef) => {
   const { current: projImage } = projectImageRef
   if (!expanded) {
-    const { invert, invertedWidth, invertedHeight } = flip(
+    const { invertedWidth, invertedHeight } = flip(
       projImage,
       "project__display-item--start",
       "project__display-item--end"
@@ -280,12 +277,11 @@ const handleAnimation = (expanded, projectImageRef) => {
       projImage,
       "project__display-item--start",
       "project__display-item--end",
-      invert,
       invertedWidth,
       invertedHeight
     )
   } else {
-    const { invert, invertedWidth, invertedHeight } = flip(
+    const { invertedWidth, invertedHeight } = flip(
       projImage,
       "project__display-item--end",
       "project__display-item--start"
@@ -294,7 +290,6 @@ const handleAnimation = (expanded, projectImageRef) => {
       projImage,
       "project__display-item--start",
       "project__display-item--end",
-      invert,
       invertedWidth,
       invertedHeight
     )
@@ -316,8 +311,10 @@ const toggleExpand = (
   handleAnimation(project.expanded, projectImageRef)
   project = { ...project, expanded: !project.expanded }
   if (index === 0) {
+    // project at beginning of array
     newExpandedArr = [project, ...expandedArr.slice(1, arrLen)]
   } else if (index === arrLen - 1) {
+    // project at end of array
     newExpandedArr = [...expandedArr.slice(0, arrLen - 1), project]
   } else {
     // project is in middle of the array...
@@ -349,14 +346,13 @@ const ProjectDisplay = ({
   setToggle,
 }) => {
   useEffect(() => {
-    console.log("useEffect called: ", projectContainerRef)
     // let scrollHandler = debounce(function() {
     //   handleScroll(toggle, projectContainerRef)
     // }, 10)
+    // TODO: throttle this function:
     const scrollHandler = e => handleScroll(toggle, projectContainerRef)
     window.addEventListener("scroll", scrollHandler)
     return () => {
-      console.log("useEffect cleanup called: ", projectContainerRef)
       window.removeEventListener("scroll", scrollHandler)
     }
   }, [toggle, projectContainerRef])
@@ -377,6 +373,8 @@ const ProjectDisplay = ({
         gifUrl={gifUrl}
         toggle={toggle}
       >
+        {/* Perhaps I could refactor the projectImageRef and projectTitle elements into a separate RFC
+        that utilizes a useReducer to just dispatch when the toggleAnim should occur */}
         <div
           ref={projectImageRef}
           className="project__display-item project__display-item--start"
@@ -402,8 +400,8 @@ const ProjectDisplay = ({
           // className="project_display-item project_display-item--contracted"
           className={
             expanded
-              ? "project_display-item project_display-item--expanded"
-              : "project_display-item project_display-item--contracted"
+              ? "project__display-content project__display-content--expanded"
+              : "project__display-content project__display-content--contracted"
           }
         >
           <p>Some Lorem Ipsum</p>
