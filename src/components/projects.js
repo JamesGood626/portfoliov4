@@ -23,8 +23,8 @@ const projectGifs = {
 }
 
 const projectUrls = [
-  { url: projectGifs.portfoliov3, expanded: false },
-  // { url: projectGifs.pianoTube, expanded: false },
+  // { url: projectGifs.portfoliov3, expanded: false },
+  { url: projectGifs.pianoTube, expanded: false },
 ]
 
 const SectionContainer = styled.section`
@@ -200,8 +200,6 @@ const BackgroundBlur = styled.div`
   width: 100vw;
   height: ${props => `${props.bodyHeight}px`};
   background: ${props => props.theme.primaryColor};
-  /* opacity: 0.7; */
-  /* visibility: ${props => (props.toggle ? "visible" : "hidden")}; */
   transition: ${props =>
     props.visible
       ? "opacity 0.4s ease-in"
@@ -358,9 +356,10 @@ const ProjectDisplay = ({
   expandedArr,
   setExpandedArr,
   projectContainerRef,
-  toggle,
-  setToggle,
+  toggleModal,
+  setToggleModal,
 }) => {
+  const [toggle, setToggle] = useState(false)
   useEffect(() => {
     // let scrollHandler = debounce(function() {
     //   handleScroll(toggle, projectContainerRef)
@@ -399,6 +398,7 @@ const ProjectDisplay = ({
           className="project__display-item-title project__display-item-title"
           onClick={e => {
             setToggle(!toggle)
+            setToggleModal(!toggleModal)
             toggleExpand(
               index,
               expandedArr,
@@ -439,7 +439,7 @@ const ProjectDisplay = ({
 const projects = () => {
   const [expandedArr, setExpandedArr] = useState(projectUrls)
   const [totalBodyHeight, setTotalBodyHeight] = useState(0)
-  const [toggle, setToggle] = useState(false)
+  const [toggleModal, setToggleModal] = useState(false)
   const projectContainerRef = createRef(null)
   useEffect(() => {
     setTotalBodyHeight(document.body.clientHeight)
@@ -465,8 +465,8 @@ const projects = () => {
                 expandedArr={expandedArr}
                 setExpandedArr={setExpandedArr}
                 projectContainerRef={projectContainerRef}
-                toggle={toggle}
-                setToggle={setToggle}
+                toggleModal={toggleModal}
+                setToggleModal={setToggleModal}
               />
             ))}
             {/* </Carousel> */}
@@ -474,8 +474,8 @@ const projects = () => {
         </div>
       </SectionContainer>
       <BackgroundBlur
-        className={toggle ? "modal--visible" : "modal--hidden"}
-        visible={toggle}
+        className={toggleModal ? "modal--visible" : "modal--hidden"}
+        visible={toggleModal}
         bodyHeight={totalBodyHeight}
       />
     </>

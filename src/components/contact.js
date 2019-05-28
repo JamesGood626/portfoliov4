@@ -58,8 +58,33 @@ const SectionContainer = styled.section`
         height: 9rem;
       }
 
+      /* Label's position when the input is focused */
       .input-active {
         transform: translate(-2rem, 0rem) scale(0.8);
+      }
+
+      @media screen and (min-width: 450px) {
+        .input-active {
+          transform: translate(-2.4rem, 0rem) scale(0.8);
+        }
+      }
+
+      @media screen and (min-width: 500px) {
+        .input-active {
+          transform: translate(-2.6rem, 0rem) scale(0.8);
+        }
+      }
+
+      @media screen and (min-width: 550px) {
+        .input-active {
+          transform: translate(-2.8rem, 0rem) scale(0.8);
+        }
+      }
+
+      @media screen and (min-width: 600px) {
+        .input-active {
+          transform: translate(-3rem, 0rem) scale(0.8);
+        }
       }
 
       .contact__form-input--error {
