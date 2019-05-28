@@ -2,8 +2,8 @@ import React, { useState, useEffect, createRef } from "react"
 import styled from "styled-components"
 import { TweenLite } from "gsap"
 import debounce from "lodash.debounce"
+import throttle from "lodash.throttle"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
-import Carousel from "nuka-carousel"
 
 // TODO:
 // 1. Fix weird bug that causes crash when toggling -> followed by scrolling
@@ -346,7 +346,6 @@ const handleScroll = (toggle, projectContainerRef) => {
 }
 
 const handleResize = setTotalBodyHeight => {
-  console.log("handling resize")
   setTotalBodyHeight(document.body.clientHeight)
 }
 
@@ -361,11 +360,12 @@ const ProjectDisplay = ({
 }) => {
   const [toggle, setToggle] = useState(false)
   useEffect(() => {
-    // let scrollHandler = debounce(function() {
-    //   handleScroll(toggle, projectContainerRef)
-    // }, 10)
-    // TODO: throttle this function:
-    const scrollHandler = e => handleScroll(toggle, projectContainerRef)
+    let debouncedScroll = debounce(function() {
+      handleScroll(toggle, projectContainerRef)
+    }, 250)
+    let scrollHandler = throttle(function() {
+      debouncedScroll()
+    }, 500)
     window.addEventListener("scroll", scrollHandler)
     return () => {
       window.removeEventListener("scroll", scrollHandler)
