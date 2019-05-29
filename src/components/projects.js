@@ -20,11 +20,14 @@ import ScrollToPlugin from "gsap/ScrollToPlugin"
 const projectGifs = {
   portfoliov3: "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif",
   pianoTube: "https://media.giphy.com/media/Ll8BgZtyxlZOTbxQjh/giphy.gif",
+  budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.gif",
+  // budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.mp4",
 }
 
 const projectUrls = [
-  // { url: projectGifs.portfoliov3, expanded: false },
-  { url: projectGifs.pianoTube, expanded: false },
+  { url: projectGifs.portfoliov3, title: "Portfoliov3", expanded: false },
+  { url: projectGifs.pianoTube, title: "PianoTube", expanded: false },
+  { url: projectGifs.budgetSlayer, title: "Budget Slayer", expanded: false },
 ]
 
 const SectionContainer = styled.section`
@@ -32,7 +35,7 @@ const SectionContainer = styled.section`
   z-index: 9001;
   width: 100vw;
   margin-bottom: 4rem;
-  height: 26rem;
+  background: orange;
 
   #project__content {
     display: flex;
@@ -48,10 +51,11 @@ const SectionContainer = styled.section`
 
   #project__display {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     width: 90%;
     max-width: 60rem;
-    /* background: lime; */
+    background: blue;
   }
 
   #project__display-inner-container {
@@ -206,6 +210,58 @@ const BackgroundBlur = styled.div`
       : "visibility 0.2s 0.4s ease-in, opacity 0.4s ease-in"};
 `
 
+const Carousel = styled.ul`
+  position: relative;
+  display: inline-block;
+  width: 100vw;
+  height: 20rem;
+  list-style-type: none;
+
+  li {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* .carousel__item {
+    position: absolute;
+    transition: transform 1s ease-out;
+    transform: translateX(24rem);
+  } */
+
+  /* .project__display--current {
+    transform: translateX(0rem);
+  } */
+
+  .project__display--next {
+    /* display: none; */
+    /* transform: translateX(24rem); */
+  }
+`
+
+const CarouselItem = styled.li`
+  position: absolute;
+  transition: all 1s ease-out;
+  transform: ${({ prev }) => prev && "translateX(-60rem)"};
+  transform: ${({ current }) => current && "translateX(0rem)"};
+  transform: ${({ next }) => next && "translateX(60rem)"};
+
+  opacity: ${({ prev }) => prev && "0"};
+  opacity: ${({ current }) => current && "1"};
+  opacity: ${({ next }) => next && "0"};
+`
+
+const Dots = styled.div`
+  display: flex;
+
+  .carousel__dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    background: lime;
+    margin-top: 3rem;
+    margin-left: 0.4rem;
+  }
+`
+
 const flip = (el, start, end) => {
   // Get the first position.
   const first = el.getBoundingClientRect()
@@ -312,21 +368,34 @@ const toggleExpand = (
   projectImageRef,
   projectContainerRef
 ) => {
+  console.log("TOGGLE EXPAND")
   const { offsetTop } = projectContainerRef.current
   TweenLite.to(window, 0.4, { scrollTo: offsetTop })
   let newExpandedArr = []
   const arrLen = expandedArr.length
   let project = expandedArr[index]
+  console.log("THE PROJECT: ", project)
   handleAnimation(project.expanded, projectImageRef)
   project = { ...project, expanded: !project.expanded }
   if (index === 0) {
     // project at beginning of array
     newExpandedArr = [project, ...expandedArr.slice(1, arrLen)]
+    console.log("first newExpandedArr: ", newExpandedArr)
   } else if (index === arrLen - 1) {
     // project at end of array
     newExpandedArr = [...expandedArr.slice(0, arrLen - 1), project]
+    console.log("last newExpandedArr: ", newExpandedArr)
   } else {
+    console.log("first part of arr: ", expandedArr.slice(0, index))
+    console.log("arr after first slice ", expandedArr)
+    console.log("last part of arr: ", expandedArr.slice(index + 1, arrLen))
     // project is in middle of the array...
+    newExpandedArr = [
+      ...expandedArr.slice(0, index),
+      project,
+      ...expandedArr.slice(index + 1, arrLen),
+    ]
+    console.log("newExpandedArr: ", newExpandedArr)
   }
   setExpandedArr(newExpandedArr)
 }
@@ -350,8 +419,11 @@ const handleResize = setTotalBodyHeight => {
 }
 
 const ProjectDisplay = ({
+  projectArrLength,
   index,
+  currentProject,
   gifUrl,
+  title,
   expandedArr,
   setExpandedArr,
   projectContainerRef,
@@ -374,16 +446,20 @@ const ProjectDisplay = ({
   const projectImageRef = createRef(null)
   const { expanded } = expandedArr[index]
 
-  // Add a useEffect hook to manage window.addEventListener('scroll')
-  // W/ a function that will prevent the user from scrolling higher
-  // than the top of the project sections boundingClientRect when
-  // toggle is true.
-  // Also, when toggled -> animate the scrollPos
-  // to the project section's top.
+  // nextIndex and prevIndex check for end/begginning to ensure proper order.
+  const nextIndex =
+    currentProject + 1 === projectArrLength ? 0 : currentProject + 1
+  const prevIndex =
+    currentProject - 1 === -1 ? projectArrLength - 1 : currentProject - 1
   return (
-    <>
+    <CarouselItem
+      key={index}
+      prev={index === prevIndex}
+      current={index === currentProject}
+      next={index === nextIndex}
+      index={index}
+    >
       <ProjectContainer
-        key={index}
         id="project__display-inner-container"
         gifUrl={gifUrl}
         toggle={toggle}
@@ -395,7 +471,7 @@ const ProjectDisplay = ({
           className="project__display-item project__display-item--start"
         />
         <div
-          className="project__display-item-title project__display-item-title"
+          className="project__display-item-title"
           onClick={e => {
             setToggle(!toggle)
             setToggleModal(!toggleModal)
@@ -409,7 +485,7 @@ const ProjectDisplay = ({
           }}
         >
           <span>
-            <h4>Project Title</h4>
+            <h4>{title}</h4>
           </span>
         </div>
         <div
@@ -431,12 +507,13 @@ const ProjectDisplay = ({
           </p>
         </div>
       </ProjectContainer>
-    </>
+    </CarouselItem>
   )
 }
 
 // "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif"
 const projects = () => {
+  const [currentProject, setCurrentProject] = useState(0)
   const [expandedArr, setExpandedArr] = useState(projectUrls)
   const [totalBodyHeight, setTotalBodyHeight] = useState(0)
   const [toggleModal, setToggleModal] = useState(false)
@@ -457,19 +534,30 @@ const projects = () => {
         <div id="project__content">
           <h3>Projects</h3>
           <div id="project__display">
-            {/* <Carousel> */}
-            {expandedArr.map(({ url }, index) => (
-              <ProjectDisplay
-                index={index}
-                gifUrl={url}
-                expandedArr={expandedArr}
-                setExpandedArr={setExpandedArr}
-                projectContainerRef={projectContainerRef}
-                toggleModal={toggleModal}
-                setToggleModal={setToggleModal}
-              />
-            ))}
-            {/* </Carousel> */}
+            <Carousel>
+              {expandedArr.map(({ url, title }, index) => (
+                <ProjectDisplay
+                  projectArrLength={expandedArr.length}
+                  index={index}
+                  currentProject={currentProject}
+                  gifUrl={url}
+                  title={title}
+                  expandedArr={expandedArr}
+                  setExpandedArr={setExpandedArr}
+                  projectContainerRef={projectContainerRef}
+                  toggleModal={toggleModal}
+                  setToggleModal={setToggleModal}
+                />
+              ))}
+            </Carousel>
+            <Dots>
+              {expandedArr.map((_, index) => (
+                <div
+                  className="carousel__dot"
+                  onClick={() => setCurrentProject(index)}
+                />
+              ))}
+            </Dots>
           </div>
         </div>
       </SectionContainer>
