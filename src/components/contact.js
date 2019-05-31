@@ -1,4 +1,5 @@
 import React, { useState, useReducer } from "react"
+import axios from "axios"
 import styled from "styled-components"
 
 const NAME = "NAME"
@@ -195,7 +196,7 @@ const useFormReducer = (state, action) => {
 
 const contact = () => {
   const [state, dispatch] = useReducer(useFormReducer, initialFormState)
-  console.log("THE STATE: ", state)
+  // console.log("THE STATE: ", state)
 
   const labelAnimClass = inputField => {
     return state[inputField].toggle ? "input-active" : null
@@ -249,6 +250,13 @@ const contact = () => {
         onSubmit={e => {
           e.preventDefault()
           // sendEmail
+          const { NAME, EMAIL, MESSAGE } = state
+          const aws_email_url = process.env.AWS_EMAIL_LAMBDA_URL
+          axios.post(aws_email_url, {
+            name: NAME.value,
+            email: EMAIL.value,
+            message: MESSAGE.value,
+          })
         }}
       >
         <div className="contact__form-input-container">
@@ -296,7 +304,13 @@ const contact = () => {
           />
           {showErr(MESSAGE)}
         </div>
-        <button>SUBMIT</button>
+        <button
+          disable={
+            state[NAME].error || state[EMAIL].error || state[MESSAGE].error
+          }
+        >
+          SUBMIT
+        </button>
       </form>
     </SectionContainer>
   )

@@ -35,7 +35,7 @@ const SectionContainer = styled.section`
   z-index: 9001;
   width: 100vw;
   margin-bottom: 4rem;
-  background: orange;
+  /* background: orange; */
 
   #project__content {
     display: flex;
@@ -55,7 +55,7 @@ const SectionContainer = styled.section`
     align-items: center;
     width: 90%;
     max-width: 60rem;
-    background: blue;
+    /* background: blue; */
   }
 
   #project__display-inner-container {
@@ -254,11 +254,20 @@ const Dots = styled.div`
   display: flex;
 
   .carousel__dot {
-    width: 0.6rem;
-    height: 0.6rem;
-    background: lime;
+    width: 0.7rem;
+    height: 0.7rem;
     margin-top: 3rem;
     margin-left: 0.4rem;
+    border-radius: 25px;
+    border: 2px solid ${props => props.theme.primaryColor};
+  }
+
+  .carousel__dot--active {
+    background: ${props => props.theme.primaryColor};
+  }
+
+  div:first-child {
+    margin-left: 0;
   }
 `
 
@@ -553,7 +562,11 @@ const projects = () => {
             <Dots>
               {expandedArr.map((_, index) => (
                 <div
-                  className="carousel__dot"
+                  className={
+                    index === currentProject
+                      ? `carousel__dot carousel__dot--active`
+                      : `carousel__dot`
+                  }
                   onClick={() => setCurrentProject(index)}
                 />
               ))}
