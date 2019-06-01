@@ -305,9 +305,7 @@ const contact = () => {
           {showErr(MESSAGE)}
         </div>
         <button
-          disable={
-            state[NAME].error || state[EMAIL].error || state[MESSAGE].error
-          }
+          disabled={state[NAME].err || state[EMAIL].err || state[MESSAGE].err}
         >
           SUBMIT
         </button>
@@ -317,28 +315,3 @@ const contact = () => {
 }
 
 export default contact
-
-// const [
-//   nameValue,
-//   nameErr,
-//   nameToggle,
-//   setNameInputValue,
-//   setNameInputError,
-//   setNameInputFocus,
-// ] = useInput({ value: "", err: false, toggle: false })
-// const [
-//   emailValue,
-//   emailErr,
-//   emailToggle,
-//   setEmailInputValue,
-//   setEmailInputError,
-//   setEmailInputFocus,
-// ] = useInput({ value: "", err: false, toggle: false })
-// const [
-//   messageValue,
-//   messageErr,
-//   messageToggle,
-//   setMessageInputValue,
-//   setMessageInputError,
-//   setMessageInputFocus,
-// ] = useInput({ value: "", err: false, toggle: false })

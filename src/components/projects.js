@@ -179,6 +179,47 @@ const ProjectContainer = styled.div`
     transition: transform 0.65s 0.1s ease-out;
   }
 
+  .project__display-item-title:before {
+    position: absolute;
+    top: calc(105% - 0.25rem);
+    left: calc(50% - 0.25rem);
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    /* background: rgba(0, 0, 0, 0); */
+    background: ${props => props.theme.accentColor};
+    /* border: 2px solid ${props => props.theme.accentColor}; */
+    border-radius: 25px;
+    /* animation: pulse 1s ease-out infinite; */
+  }
+
+  .project__display-item-title:after {
+    position: absolute;
+    top: calc(105% - 0.5rem);
+    left: calc(50% - 0.5rem);
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    background: rgba(0, 0, 0, 0);
+    border: 2px solid ${props => props.theme.accentColor};
+    border-radius: 25px;
+    animation: pulse 1s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.4);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(0.4);
+    }
+  }
+
   @media screen and (min-width: 600px) {
     .project__display-item-title {
       transform: ${props =>
@@ -377,34 +418,26 @@ const toggleExpand = (
   projectImageRef,
   projectContainerRef
 ) => {
-  console.log("TOGGLE EXPAND")
   const { offsetTop } = projectContainerRef.current
   TweenLite.to(window, 0.4, { scrollTo: offsetTop })
   let newExpandedArr = []
   const arrLen = expandedArr.length
   let project = expandedArr[index]
-  console.log("THE PROJECT: ", project)
   handleAnimation(project.expanded, projectImageRef)
   project = { ...project, expanded: !project.expanded }
   if (index === 0) {
     // project at beginning of array
     newExpandedArr = [project, ...expandedArr.slice(1, arrLen)]
-    console.log("first newExpandedArr: ", newExpandedArr)
   } else if (index === arrLen - 1) {
     // project at end of array
     newExpandedArr = [...expandedArr.slice(0, arrLen - 1), project]
-    console.log("last newExpandedArr: ", newExpandedArr)
   } else {
-    console.log("first part of arr: ", expandedArr.slice(0, index))
-    console.log("arr after first slice ", expandedArr)
-    console.log("last part of arr: ", expandedArr.slice(index + 1, arrLen))
     // project is in middle of the array...
     newExpandedArr = [
       ...expandedArr.slice(0, index),
       project,
       ...expandedArr.slice(index + 1, arrLen),
     ]
-    console.log("newExpandedArr: ", newExpandedArr)
   }
   setExpandedArr(newExpandedArr)
 }
@@ -473,8 +506,6 @@ const ProjectDisplay = ({
         gifUrl={gifUrl}
         toggle={toggle}
       >
-        {/* Perhaps I could refactor the projectImageRef and projectTitle elements into a separate RFC
-        that utilizes a useReducer to just dispatch when the toggleAnim should occur */}
         <div
           ref={projectImageRef}
           className="project__display-item project__display-item--start"
@@ -520,7 +551,6 @@ const ProjectDisplay = ({
   )
 }
 
-// "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif"
 const projects = () => {
   const [currentProject, setCurrentProject] = useState(0)
   const [expandedArr, setExpandedArr] = useState(projectUrls)
@@ -529,7 +559,6 @@ const projects = () => {
   const projectContainerRef = createRef(null)
   useEffect(() => {
     setTotalBodyHeight(document.body.clientHeight)
-    // Throttle this as well.
     const resizeHandler = () => handleResize(setTotalBodyHeight)
     window.addEventListener("resize", resizeHandler)
     return () => {
