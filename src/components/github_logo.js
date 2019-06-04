@@ -29,7 +29,7 @@ const SVG = styled.svg`
 
 const GithubLogo = () => (
   <SVG viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <g id="Page-1" stroke="none" stroke-width="1">
+    <g id="Page-1" stroke="none" strokeWidth="1">
       <g
         id="Mobile"
         transform="translate(-126.000000, -257.000000)"

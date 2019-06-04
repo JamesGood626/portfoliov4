@@ -35,7 +35,6 @@ const SectionContainer = styled.section`
   z-index: 9001;
   width: 100vw;
   margin-bottom: 4rem;
-  /* background: orange; */
 
   #project__content {
     display: flex;
@@ -59,6 +58,7 @@ const SectionContainer = styled.section`
   }
 
   #project__display-inner-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,6 +70,7 @@ const SectionContainer = styled.section`
   }
 
   .project__display-item--start {
+    position: relative;
     width: 80vw;
     max-width: 30rem;
     height: 18rem;
@@ -157,10 +158,11 @@ const ProjectContainer = styled.div`
   }
 
   .project__display-item-title {
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: absolute;
+    /* position: absolute; */
     z-index: 9020;
     /* top: 76%; */
     color: ${props => props.theme.primaryColor};
@@ -175,7 +177,7 @@ const ProjectContainer = styled.div`
     transform: ${props =>
       props.toggle
         ? "translateY(24rem) scale(1.3)"
-        : "translateY(16rem) scale(1)"};
+        : "translateY(2rem) scale(1)"}; /* <- This is active */
     transition: transform 0.65s 0.1s ease-out;
   }
 
@@ -186,11 +188,8 @@ const ProjectContainer = styled.div`
     content: "";
     width: 0.5rem;
     height: 0.5rem;
-    /* background: rgba(0, 0, 0, 0); */
     background: ${props => props.theme.accentColor};
-    /* border: 2px solid ${props => props.theme.accentColor}; */
     border-radius: 25px;
-    /* animation: pulse 1s ease-out infinite; */
   }
 
   .project__display-item-title:after {
@@ -217,6 +216,16 @@ const ProjectContainer = styled.div`
 
     100% {
       transform: scale(0.4);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    /* This is required for mobile fix in order to position the project
+    title div at the bottom of the gif.
+    If you have this applied on larger screen sizes... then the project
+    title div will be near the contact section... */
+    .project__display-item-title {
+      bottom: 0;
     }
   }
 
@@ -495,7 +504,6 @@ const ProjectDisplay = ({
     currentProject - 1 === -1 ? projectArrLength - 1 : currentProject - 1
   return (
     <CarouselItem
-      key={index}
       prev={index === prevIndex}
       current={index === currentProject}
       next={index === nextIndex}
@@ -575,6 +583,7 @@ const projects = () => {
             <Carousel>
               {expandedArr.map(({ url, title }, index) => (
                 <ProjectDisplay
+                  key={`${title}-${index}`}
                   projectArrLength={expandedArr.length}
                   index={index}
                   currentProject={currentProject}
@@ -591,6 +600,7 @@ const projects = () => {
             <Dots>
               {expandedArr.map((_, index) => (
                 <div
+                  key={index}
                   className={
                     index === currentProject
                       ? `carousel__dot carousel__dot--active`

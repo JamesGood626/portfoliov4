@@ -29,13 +29,7 @@ const SVG = styled.svg`
 
 const LinkedInLogo = () => (
   <SVG viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <g
-      id="Page-1"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fillRule="evenodd"
-    >
+    <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g
         id="Mobile"
         transform="translate(-170.000000, -257.000000)"
