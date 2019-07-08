@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { TweenLite } from "gsap"
 import debounce from "lodash.debounce"
 import throttle from "lodash.throttle"
-import { TweenMax } from "gsap"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 
 // TODO:
@@ -250,13 +249,6 @@ const ProjectContainer = styled.div`
         : "translateY(16rem) scale(1)"};
   }
 
-  /* .project__display-item-title {
-    transform: ${props =>
-      props.toggle
-        ? "translateY(0rem) scale(1.2)"
-        : "translateY(-2rem) scale(1)"};
-  } */
-
   @media screen and (min-width: 600px) {
     .project__display-item-title {
       transform: ${props =>
@@ -383,57 +375,57 @@ const popUp = (el, start, end, invertedWidth, invertedHeight) => {
   el.classList.add(end)
   // WEB ANIM
   // Go from the inverted position to last.
-  TweenMax.fromTo(
-    el,
-    1,
-    {
-      // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-      transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
-    },
-    { transform: `scale(1, 1) translateY(0px)` }
-  )
-
-  // el.animate(
-  //   [
-  //     {
-  //       // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-  //       transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
-  //     },
-  //     { transform: `scale(1, 1) translateY(0px)` },
-  //   ],
+  // TweenMax.fromTo(
+  //   el,
+  //   1,
   //   {
-  //     duration: 700,
-  //     easing: "cubic-bezier(0,0,0.32,1)",
-  //   }
+  //     // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+  //     transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
+  //   },
+  //   { transform: `scale(1, 1) translateY(0px)` }
   // )
+
+  el.animate(
+    [
+      {
+        // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+        transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
+      },
+      { transform: `scale(1, 1) translateY(0px)` },
+    ],
+    {
+      duration: 700,
+      easing: "cubic-bezier(0,0,0.32,1)",
+    }
+  )
 }
 
 const popDown = (el, start, end, invertedWidth, invertedHeight) => {
   el.classList.remove(end)
   el.classList.add(start)
   // Go from the inverted position to last.
-  TweenMax.fromTo(
-    el,
-    1,
-    {
-      // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-      transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
-    },
-    { transform: `scale(1, 1) translateY(0px)` }
-  )
-  // el.animate(
-  //   [
-  //     {
-  //       // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-  //       transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
-  //     },
-  //     { transform: `scale(1, 1) translateY(0px)` },
-  //   ],
+  // TweenMax.fromTo(
+  //   el,
+  //   1,
   //   {
-  //     duration: 700,
-  //     easing: "cubic-bezier(0,0,0.32,1)",
-  //   }
+  //     // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+  //     transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
+  //   },
+  //   { transform: `scale(1, 1) translateY(0px)` }
   // )
+  el.animate(
+    [
+      {
+        // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+        transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
+      },
+      { transform: `scale(1, 1) translateY(0px)` },
+    ],
+    {
+      duration: 700,
+      easing: "cubic-bezier(0,0,0.32,1)",
+    }
+  )
 }
 
 // project__display-item--start
