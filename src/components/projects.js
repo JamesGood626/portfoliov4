@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { TweenLite } from "gsap"
 import debounce from "lodash.debounce"
 import throttle from "lodash.throttle"
+import { TweenMax } from "gsap"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 
 // TODO:
@@ -54,14 +55,27 @@ const SectionContainer = styled.section`
     align-items: center;
     width: 90%;
     max-width: 60rem;
+    /* TODO: Remove */
     /* background: blue; */
   }
+
+  /*
+    TODO:
+    this seems to cause more problems than it solves
+  */
+  /* @media screen and (max-width: 400px) {
+    #project__display-inner-container {
+      height: 100%;
+    }
+  } */
 
   #project__display-inner-container {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* TODO: Remove */
+    /* background: orange; */
   }
 
   .project__image--start {
@@ -69,6 +83,12 @@ const SectionContainer = styled.section`
     background: orange;
   }
 
+  /*
+    TODO:
+    removing position: absolute fixed
+    the odd positioning on mobile when anim is triggered.
+    But caused another problem... as the project text is nowhere to be found.
+  */
   .project__display-item--start {
     position: relative;
     width: 80vw;
@@ -79,7 +99,8 @@ const SectionContainer = styled.section`
   }
 
   .project__display-item--end {
-    position: absolute;
+    position: relative;
+    /* position: absolute; */
     width: 90vw;
     max-width: 50rem;
     height: 24rem;
@@ -94,8 +115,16 @@ const SectionContainer = styled.section`
   }
 
   .project__display-content {
-    position: absolute;
-    top: 34rem;
+    /* TODO:
+        for debugging purposes.
+        Changed this from position: absolute; to position: relative;
+        This fixes one thing, but breaks another.
+        On mobile screens. The title div would jump to the top of the gif, and
+        animate from there. <- This is the problem that's fixed.
+        HOWEVER, now it animates too far down the page.
+    */
+    position: relative;
+    top: 8rem;
     z-index: 9010;
     width: 90vw;
     max-width: 50rem;
@@ -116,7 +145,7 @@ const SectionContainer = styled.section`
   @media screen and (min-width: 600px) {
     .project__display-content {
       font-size: 1rem;
-      transform: translateY(0);
+      transform: translateY(-4rem);
     }
   }
 
@@ -147,7 +176,7 @@ const ProjectTitle = styled.div`
 `
 
 const ProjectContainer = styled.div`
-  position: relative;
+  position: absolute;
   z-index: 9002;
 
   .project__display-item {
@@ -158,13 +187,10 @@ const ProjectContainer = styled.div`
   }
 
   .project__display-item-title {
-    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* position: absolute; */
     z-index: 9020;
-    /* top: 76%; */
     color: ${props => props.theme.primaryColor};
     background: ${props => props.theme.primaryWhite};
     border-radius: 4px;
@@ -174,10 +200,6 @@ const ProjectContainer = styled.div`
     width: 14rem;
     height: 3.8rem;
     left: calc(50% - 7rem);
-    transform: ${props =>
-      props.toggle
-        ? "translateY(24rem) scale(1.3)"
-        : "translateY(2rem) scale(1)"}; /* <- This is active */
     transition: transform 0.65s 0.1s ease-out;
   }
 
@@ -219,15 +241,21 @@ const ProjectContainer = styled.div`
     }
   }
 
-  @media screen and (max-width: 600px) {
-    /* This is required for mobile fix in order to position the project
-    title div at the bottom of the gif.
-    If you have this applied on larger screen sizes... then the project
-    title div will be near the contact section... */
-    .project__display-item-title {
-      bottom: 0;
-    }
+  .project__display-item-title {
+    position: absolute;
+    top: 0;
+    transform: ${props =>
+      props.toggle
+        ? "translateY(22rem) scale(1.2)"
+        : "translateY(16rem) scale(1)"};
   }
+
+  /* .project__display-item-title {
+    transform: ${props =>
+      props.toggle
+        ? "translateY(0rem) scale(1.2)"
+        : "translateY(-2rem) scale(1)"};
+  } */
 
   @media screen and (min-width: 600px) {
     .project__display-item-title {
@@ -353,39 +381,59 @@ const popUp = (el, start, end, invertedWidth, invertedHeight) => {
   // el.classList.remove('start');
   el.classList.remove(start)
   el.classList.add(end)
+  // WEB ANIM
   // Go from the inverted position to last.
-  el.animate(
-    [
-      {
-        // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-        transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
-      },
-      { transform: `scale(1, 1) translateY(0px)` },
-    ],
+  TweenMax.fromTo(
+    el,
+    1,
     {
-      duration: 700,
-      easing: "cubic-bezier(0,0,0.32,1)",
-    }
+      // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+      transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
+    },
+    { transform: `scale(1, 1) translateY(0px)` }
   )
+
+  // el.animate(
+  //   [
+  //     {
+  //       // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+  //       transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
+  //     },
+  //     { transform: `scale(1, 1) translateY(0px)` },
+  //   ],
+  //   {
+  //     duration: 700,
+  //     easing: "cubic-bezier(0,0,0.32,1)",
+  //   }
+  // )
 }
 
 const popDown = (el, start, end, invertedWidth, invertedHeight) => {
   el.classList.remove(end)
   el.classList.add(start)
   // Go from the inverted position to last.
-  el.animate(
-    [
-      {
-        // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-        transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
-      },
-      { transform: `scale(1, 1) translateY(0px)` },
-    ],
+  TweenMax.fromTo(
+    el,
+    1,
     {
-      duration: 700,
-      easing: "cubic-bezier(0,0,0.32,1)",
-    }
+      // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+      transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
+    },
+    { transform: `scale(1, 1) translateY(0px)` }
   )
+  // el.animate(
+  //   [
+  //     {
+  //       // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+  //       transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
+  //     },
+  //     { transform: `scale(1, 1) translateY(0px)` },
+  //   ],
+  //   {
+  //     duration: 700,
+  //     easing: "cubic-bezier(0,0,0.32,1)",
+  //   }
+  // )
 }
 
 // project__display-item--start
