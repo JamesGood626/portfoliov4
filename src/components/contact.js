@@ -17,7 +17,6 @@ const SectionContainer = styled.section`
   width: 100vw;
   padding-bottom: 4rem;
   /* height: 60vh; */
-  /* background: lime; */
 
   h3 {
     font-size: 1.6rem;
