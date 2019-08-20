@@ -2,6 +2,7 @@ import React, { useState, useReducer } from "react"
 import axios from "axios"
 import styled from "styled-components"
 
+const aws_email_url = process.env.GATSBY_AWS_EMAIL_LAMBDA_URL
 const NAME = "NAME"
 const EMAIL = "EMAIL"
 const MESSAGE = "MESSAGE"
@@ -247,16 +248,16 @@ const contact = () => {
       <h3>Contact</h3>
       <form
         id="contact__form"
-        onSubmit={e => {
+        onSubmit={async e => {
           e.preventDefault()
           // sendEmail
           const { NAME, EMAIL, MESSAGE } = state
-          const aws_email_url = process.env.AWS_EMAIL_LAMBDA_URL
-          axios.post(aws_email_url, {
+          const result = await axios.post(aws_email_url, {
             name: NAME.value,
             email: EMAIL.value,
             message: MESSAGE.value,
           })
+          console.log("DA RESULT: ", result)
         }}
       >
         <div className="contact__form-input-container">
