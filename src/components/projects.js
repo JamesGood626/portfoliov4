@@ -599,12 +599,13 @@ const ProjectDisplay = ({
   )
 }
 
-const projects = () => {
+const Projects = () => {
   const [currentProject, setCurrentProject] = useState(0)
   const [expandedArr, setExpandedArr] = useState(projectUrls)
   const [totalBodyHeight, setTotalBodyHeight] = useState(0)
   const [toggleModal, setToggleModal] = useState(false)
   const projectContainerRef = createRef(null)
+
   useEffect(() => {
     setTotalBodyHeight(document.body.clientHeight)
     const resizeHandler = () => handleResize(setTotalBodyHeight)
@@ -662,4 +663,4 @@ const projects = () => {
   )
 }
 
-export default projects
+export default Projects

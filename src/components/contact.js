@@ -120,8 +120,7 @@ const Button = styled.button`
 
   &:hover {
     cursor: pointer;
-    box-shadow: ${props =>
-      `inset 0 3.125rem 0 0 ${props.theme.accentColor}`};
+    box-shadow: ${props => `inset 0 3.125rem 0 0 ${props.theme.accentColor}`};
   }
 `
 
@@ -217,7 +216,7 @@ const handleEmailSendResult = (result, setEmailSentStatus) => {
   }
 }
 
-const contact = () => {
+const Contact = () => {
   const [state, dispatch] = useReducer(useFormReducer, initialFormState)
   const [emailSentStatus, setEmailSentStatus] = useState(null)
 
@@ -352,4 +351,4 @@ const contact = () => {
   )
 }
 
-export default contact
+export default Contact
