@@ -2,12 +2,16 @@ import React, { useState, useReducer } from "react"
 import axios from "axios"
 import styled from "styled-components"
 
+const aws_email_url = process.env.GATSBY_AWS_EMAIL_LAMBDA_URL
 const NAME = "NAME"
 const EMAIL = "EMAIL"
 const MESSAGE = "MESSAGE"
 const TOGGLE = "TOGGLE"
 const SET_VALUE = "SET_VALUE"
 const SET_ERROR = "SET_ERROR"
+const RESET_FORM_STATE = "RESET_FORM_STATE"
+
+// Dafuq
 
 const SectionContainer = styled.section`
   display: flex;
@@ -16,7 +20,6 @@ const SectionContainer = styled.section`
   width: 100vw;
   padding-bottom: 4rem;
   /* height: 60vh; */
-  /* background: lime; */
 
   h3 {
     font-size: 1.6rem;
@@ -102,23 +105,23 @@ const SectionContainer = styled.section`
         color: red;
       }
     }
+  }
+`
 
-    button {
-      margin-top: 1.2rem;
-      font-size: 1rem;
-      padding: 0.8em 1em;
-      color: ${props => props.theme.primaryWhite};
-      background: ${props => props.theme.primaryColor};
-      border: none;
-      box-shadow: inset 0 0 0 0 #35e0f0;
-      transition: 0.2s ease-out;
+const Button = styled.button`
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  padding: 0.8em 1em;
+  color: ${props => props.theme.primaryWhite};
+  background: ${props => props.theme.primaryColor};
+  border: none;
+  box-shadow: inset 0 0 0 0 #35e0f0;
+  transition: 0.2s ease-out;
 
-      &:hover {
-        cursor: pointer;
-        box-shadow: ${props =>
-          `inset 0 3.125rem 0 0 ${props.theme.accentColor}`};
-      }
-    }
+  &:hover {
+    cursor: pointer;
+    box-shadow: ${props =>
+      `inset 0 3.125rem 0 0 ${props.theme.accentColor}`};
   }
 `
 
@@ -142,6 +145,8 @@ const getErrMessage = inputField => {
           Please enter a valid Message
         </span>
       )
+    default:
+      return
   }
 }
 
@@ -189,26 +194,39 @@ const useFormReducer = (state, action) => {
       return setError(state, action.payload)
     case TOGGLE:
       return toggle(state, action.payload)
+    case RESET_FORM_STATE:
+      return initialFormState
     default:
       throw new Error()
   }
 }
 
+const handleEmailSendResult = (result, setEmailSentStatus) => {
+  if (result.hasOwnProperty("data") && result.data.hasOwnProperty("type")) {
+    const { type } = result.data
+    switch (type) {
+      case "EMAIL_SENT":
+        setEmailSentStatus("Message sent!")
+        break
+      case "EMAIL_ERROR":
+        setEmailSentStatus("Oops... Something went wrong")
+        break
+      default:
+        return
+    }
+  }
+}
+
 const contact = () => {
   const [state, dispatch] = useReducer(useFormReducer, initialFormState)
-  // console.log("THE STATE: ", state)
+  const [emailSentStatus, setEmailSentStatus] = useState(null)
 
-  const labelAnimClass = inputField => {
-    return state[inputField].toggle ? "input-active" : null
-  }
-
-  const toggleLabelAnim = inputField => {
+  const labelAnimClass = inputField =>
+    state[inputField].toggle ? "input-active" : null
+  const toggleLabelAnim = inputField =>
     dispatch({ type: TOGGLE, payload: { inputField } })
-  }
-
-  const setError = (inputField, err) => {
+  const setError = (inputField, err) =>
     dispatch({ type: SET_ERROR, payload: { inputField, err } })
-  }
 
   const validateValue = (value, inputField) => {
     // TODO: Implement validation functions below.
@@ -219,6 +237,8 @@ const contact = () => {
         return false
       case MESSAGE:
         return false
+      default:
+        return
     }
   }
   // compose this w/ a function that validates a particular inputField
@@ -237,6 +257,11 @@ const contact = () => {
     })
   }
 
+  const resetForm = () => {
+    setEmailSentStatus(null)
+    dispatch({ type: RESET_FORM_STATE })
+  }
+
   const showErr = inputField => {
     const { err } = state[inputField]
     return err ? getErrMessage(inputField) : null
@@ -244,72 +269,85 @@ const contact = () => {
 
   return (
     <SectionContainer>
-      <h3>Contact</h3>
-      <form
-        id="contact__form"
-        onSubmit={e => {
-          e.preventDefault()
-          // sendEmail
-          const { NAME, EMAIL, MESSAGE } = state
-          const aws_email_url = process.env.AWS_EMAIL_LAMBDA_URL
-          axios.post(aws_email_url, {
-            name: NAME.value,
-            email: EMAIL.value,
-            message: MESSAGE.value,
-          })
-        }}
-      >
-        <div className="contact__form-input-container">
-          <label htmlFor="name" className={labelAnimClass(NAME)}>
-            Name
-          </label>
-          <input
-            id="name"
-            className="contact__form-input"
-            type="text"
-            value={state[NAME].value}
-            onChange={e => changeInputValue(e.target.value, NAME)}
-            onFocus={() => toggleLabelAnim(NAME)}
-            onBlur={() => toggleLabelAnim(NAME)}
-          />
-          {showErr(NAME)}
-        </div>
-        <div className="contact__form-input-container">
-          <label htmlFor="email" className={labelAnimClass(EMAIL)}>
-            Email
-          </label>
-          <input
-            id="email"
-            className="contact__form-input"
-            type="text"
-            value={state[EMAIL].value}
-            onChange={e => changeInputValue(e.target.value, EMAIL)}
-            onFocus={() => toggleLabelAnim(EMAIL)}
-            onBlur={() => toggleLabelAnim(EMAIL)}
-          />
-          {showErr(EMAIL)}
-        </div>
-        <div className="contact__form-input-container">
-          <label htmlFor="message" className={labelAnimClass(MESSAGE)}>
-            Message
-          </label>
-          <textarea
-            id="message"
-            className="contact__form-input"
-            type="text"
-            value={state[MESSAGE].value}
-            onChange={e => changeInputValue(e.target.value, MESSAGE)}
-            onFocus={() => toggleLabelAnim(MESSAGE)}
-            onBlur={() => toggleLabelAnim(MESSAGE)}
-          />
-          {showErr(MESSAGE)}
-        </div>
-        <button
-          disabled={state[NAME].err || state[EMAIL].err || state[MESSAGE].err}
-        >
-          SUBMIT
-        </button>
-      </form>
+      {emailSentStatus ? (
+        <>
+          <h3>{emailSentStatus}</h3>
+          {emailSentStatus === "Oops... Something went wrong" && (
+            <Button onClick={resetForm}>TRY AGAIN</Button>
+          )}
+        </>
+      ) : (
+        <>
+          <h3>Contact</h3>
+          <form
+            id="contact__form"
+            onSubmit={async e => {
+              e.preventDefault()
+              // sendEmail
+              const { NAME, EMAIL, MESSAGE } = state
+              const result = await axios.post(aws_email_url, {
+                name: NAME.value,
+                email: EMAIL.value,
+                message: MESSAGE.value,
+              })
+              handleEmailSendResult(result, setEmailSentStatus)
+            }}
+          >
+            <div className="contact__form-input-container">
+              <label htmlFor="name" className={labelAnimClass(NAME)}>
+                Name
+              </label>
+              <input
+                id="name"
+                className="contact__form-input"
+                type="text"
+                value={state[NAME].value}
+                onChange={e => changeInputValue(e.target.value, NAME)}
+                onFocus={() => toggleLabelAnim(NAME)}
+                onBlur={() => toggleLabelAnim(NAME)}
+              />
+              {showErr(NAME)}
+            </div>
+            <div className="contact__form-input-container">
+              <label htmlFor="email" className={labelAnimClass(EMAIL)}>
+                Email
+              </label>
+              <input
+                id="email"
+                className="contact__form-input"
+                type="text"
+                value={state[EMAIL].value}
+                onChange={e => changeInputValue(e.target.value, EMAIL)}
+                onFocus={() => toggleLabelAnim(EMAIL)}
+                onBlur={() => toggleLabelAnim(EMAIL)}
+              />
+              {showErr(EMAIL)}
+            </div>
+            <div className="contact__form-input-container">
+              <label htmlFor="message" className={labelAnimClass(MESSAGE)}>
+                Message
+              </label>
+              <textarea
+                id="message"
+                className="contact__form-input"
+                type="text"
+                value={state[MESSAGE].value}
+                onChange={e => changeInputValue(e.target.value, MESSAGE)}
+                onFocus={() => toggleLabelAnim(MESSAGE)}
+                onBlur={() => toggleLabelAnim(MESSAGE)}
+              />
+              {showErr(MESSAGE)}
+            </div>
+            <Button
+              disabled={
+                state[NAME].err || state[EMAIL].err || state[MESSAGE].err
+              }
+            >
+              SUBMIT
+            </Button>
+          </form>
+        </>
+      )}
     </SectionContainer>
   )
 }
