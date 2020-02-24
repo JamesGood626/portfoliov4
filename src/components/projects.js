@@ -375,57 +375,57 @@ const popUp = (el, start, end, invertedWidth, invertedHeight) => {
   el.classList.add(end)
   // WEB ANIM
   // Go from the inverted position to last.
-  // TweenMax.fromTo(
-  //   el,
-  //   1,
-  //   {
-  //     // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-  //     transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
-  //   },
-  //   { transform: `scale(1, 1) translateY(0px)` }
-  // )
-
-  el.animate(
-    [
-      {
-        // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-        transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
-      },
-      { transform: `scale(1, 1) translateY(0px)` },
-    ],
+  TweenLite.fromTo(
+    el,
+    1,
     {
-      duration: 700,
-      easing: "cubic-bezier(0,0,0.32,1)",
-    }
+      // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+      transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
+    },
+    { transform: `scale(1, 1) translateY(0px)` }
   )
+
+  // el.animate(
+  //   [
+  //     {
+  //       // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+  //       transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(-35%)`,
+  //     },
+  //     { transform: `scale(1, 1) translateY(0px)` },
+  //   ],
+  //   {
+  //     duration: 700,
+  //     easing: "cubic-bezier(0,0,0.32,1)",
+  //   }
+  // )
 }
 
 const popDown = (el, start, end, invertedWidth, invertedHeight) => {
   el.classList.remove(end)
   el.classList.add(start)
   // Go from the inverted position to last.
-  // TweenMax.fromTo(
-  //   el,
-  //   1,
-  //   {
-  //     // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-  //     transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
-  //   },
-  //   { transform: `scale(1, 1) translateY(0px)` }
-  // )
-  el.animate(
-    [
-      {
-        // percentage value for translateY arbitrarily tweaked to achieve smooth transition
-        transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
-      },
-      { transform: `scale(1, 1) translateY(0px)` },
-    ],
+  TweenLite.fromTo(
+    el,
+    1,
     {
-      duration: 700,
-      easing: "cubic-bezier(0,0,0.32,1)",
-    }
+      // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+      transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
+    },
+    { transform: `scale(1, 1) translateY(0px)` }
   )
+  // el.animate(
+  //   [
+  //     {
+  //       // percentage value for translateY arbitrarily tweaked to achieve smooth transition
+  //       transform: `scale(${invertedWidth}, ${invertedHeight}) translateY(20%)`,
+  //     },
+  //     { transform: `scale(1, 1) translateY(0px)` },
+  //   ],
+  //   {
+  //     duration: 700,
+  //     easing: "cubic-bezier(0,0,0.32,1)",
+  //   }
+  // )
 }
 
 // project__display-item--start
