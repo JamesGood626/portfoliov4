@@ -23,15 +23,17 @@ const projectGifs = {
   portfoliov3: "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif",
   pianoTube: "https://media.giphy.com/media/Ll8BgZtyxlZOTbxQjh/giphy.gif",
   budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.gif",
+  notastical: "https://www.notastical.com",
   bikeShop: "https://quizzical-lovelace-ae78a3.netlify.com/",
   // budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.mp4",
 }
 
 const projectUrls = [
-  { url: projectGifs.portfoliov3, title: "Portfoliov3", expanded: false },
-  { url: projectGifs.pianoTube, title: "PianoTube", expanded: false },
-  { url: projectGifs.budgetSlayer, title: "Budget Slayer", expanded: false },
+  // { url: projectGifs.portfoliov3, title: "Portfoliov3", expanded: false },
+  // { url: projectGifs.pianoTube, title: "PianoTube", expanded: false },
+  { url: projectGifs.notastical, title: "Notastical", expanded: false },
   { url: projectGifs.bikeShop, title: "Bike Shop", expanded: false },
+  { url: projectGifs.budgetSlayer, title: "Budget Slayer", expanded: false },
 ]
 
 const SectionContainer = styled.section`

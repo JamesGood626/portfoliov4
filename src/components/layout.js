@@ -44,9 +44,9 @@ const Layout = ({ children }) => (
           <Header siteTitle={data.site.siteMetadata.title} />
           <div>
             <main>{children}</main>
-            <Footer>
+            {/* <Footer>
               <p>TM</p>
-            </Footer>
+            </Footer> */}
           </div>
         </>
       </ThemeProvider>

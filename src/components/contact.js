@@ -3,7 +3,6 @@ import axios from "axios"
 import styled from "styled-components"
 
 const aws_email_url = process.env.GATSBY_AWS_EMAIL_LAMBDA_URL
-console.log(aws_email_url)
 const NAME = "NAME"
 const EMAIL = "EMAIL"
 const MESSAGE = "MESSAGE"
