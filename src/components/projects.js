@@ -23,7 +23,7 @@ const projectGifs = {
   portfoliov3: "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif",
   pianoTube: "https://media.giphy.com/media/Ll8BgZtyxlZOTbxQjh/giphy.gif",
   budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.gif",
-  notastical: "https://www.notastical.com",
+  notastical: "https://media.giphy.com/media/cODd60VEBgS9ET68oG/giphy.gif",
   bikeShop: "https://quizzical-lovelace-ae78a3.netlify.com/",
   // budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.mp4",
 }
