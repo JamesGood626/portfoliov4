@@ -222,8 +222,10 @@ const Contact = () => {
 
   const labelAnimClass = inputField =>
     state[inputField].toggle ? "input-active" : null
+
   const toggleLabelAnim = inputField =>
     dispatch({ type: TOGGLE, payload: { inputField } })
+
   const setError = (inputField, err) =>
     dispatch({ type: SET_ERROR, payload: { inputField, err } })
 

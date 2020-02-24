@@ -1,9 +1,11 @@
 import React, { useState, useEffect, createRef } from "react"
 import styled from "styled-components"
-import { TweenLite } from "gsap"
+import { gsap, TweenLite } from "gsap"
+import ScrollToPlugin from "gsap/ScrollToPlugin"
 import debounce from "lodash.debounce"
 import throttle from "lodash.throttle"
-import ScrollToPlugin from "gsap/ScrollToPlugin"
+
+gsap.registerPlugin(TweenLite, ScrollToPlugin)
 
 // TODO:
 // 1. Fix weird bug that causes crash when toggling -> followed by scrolling
@@ -21,6 +23,7 @@ const projectGifs = {
   portfoliov3: "https://media.giphy.com/media/TdufmThIzksgN3clsj/giphy.gif",
   pianoTube: "https://media.giphy.com/media/Ll8BgZtyxlZOTbxQjh/giphy.gif",
   budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.gif",
+  bikeShop: "https://quizzical-lovelace-ae78a3.netlify.com/",
   // budgetSlayer: "https://media.giphy.com/media/cOtDlAqGGae9HdcR49/giphy.mp4",
 }
 
@@ -28,6 +31,7 @@ const projectUrls = [
   { url: projectGifs.portfoliov3, title: "Portfoliov3", expanded: false },
   { url: projectGifs.pianoTube, title: "PianoTube", expanded: false },
   { url: projectGifs.budgetSlayer, title: "Budget Slayer", expanded: false },
+  { url: projectGifs.bikeShop, title: "Bike Shop", expanded: false },
 ]
 
 const SectionContainer = styled.section`
@@ -413,6 +417,7 @@ const popDown = (el, start, end, invertedWidth, invertedHeight) => {
     },
     { transform: `scale(1, 1) translateY(0px)` }
   )
+
   // el.animate(
   //   [
   //     {
@@ -468,7 +473,7 @@ const toggleExpand = (
   projectContainerRef
 ) => {
   const { offsetTop } = projectContainerRef.current
-  TweenLite.to(window, 0.4, { scrollTo: offsetTop })
+  TweenLite.to(window, 0.4, { scrollTo: offsetTop + 20 })
   let newExpandedArr = []
   const arrLen = expandedArr.length
   let project = expandedArr[index]
