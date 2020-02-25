@@ -31,8 +31,18 @@ const projectGifs = {
 const projectUrls = [
   // { url: projectGifs.portfoliov3, title: "Portfoliov3", expanded: false },
   // { url: projectGifs.pianoTube, title: "PianoTube", expanded: false },
-  { url: projectGifs.notastical, title: "Notastical", expanded: false },
-  { url: projectGifs.bikeShop, title: "Bike Shop", expanded: false },
+  {
+    url: projectGifs.notastical,
+    title: "Notastical",
+    expanded: false,
+    projectUrl: "https://www.notastical.com/app/signup",
+  },
+  {
+    url: projectGifs.bikeShop,
+    title: "Bike Shop",
+    expanded: false,
+    projectUrl: "https://quizzical-lovelace-ae78a3.netlify.com/",
+  },
   { url: projectGifs.budgetSlayer, title: "Budget Slayer", expanded: false },
 ]
 
@@ -183,6 +193,15 @@ const ProjectTitle = styled.div`
 const ProjectContainer = styled.div`
   position: absolute;
   z-index: 9002;
+
+  .projectUrl {
+    text-decoration: none;
+    color: ${props => props.theme.primaryColor};
+
+    &:hover {
+      color: ${props => props.theme.accentColor};
+    }
+  }
 
   .project__display-item {
     background: ${props => `url(${props.gifUrl})`};
@@ -522,6 +541,7 @@ const ProjectDisplay = ({
   currentProject,
   gifUrl,
   title,
+  projectUrl,
   expandedArr,
   setExpandedArr,
   projectContainerRef,
@@ -568,6 +588,7 @@ const ProjectDisplay = ({
         <div
           className="project__display-item-title"
           onClick={e => {
+            if (e.target.className === "projectUrl") return
             setToggle(!toggle)
             setToggleModal(!toggleModal)
             toggleExpand(
@@ -580,7 +601,15 @@ const ProjectDisplay = ({
           }}
         >
           <span>
-            <h4>{title}</h4>
+            {projectUrl ? (
+              <h4>
+                <a className="projectUrl" href={projectUrl}>
+                  {title}
+                </a>
+              </h4>
+            ) : (
+              <h4>{title}</h4>
+            )}
           </span>
         </div>
         <div
@@ -629,7 +658,7 @@ const Projects = () => {
           <h3>Projects</h3>
           <div id="project__display">
             <Carousel>
-              {expandedArr.map(({ url, title }, index) => (
+              {expandedArr.map(({ url, title, projectUrl }, index) => (
                 <ProjectDisplay
                   key={`${title}-${index}`}
                   projectArrLength={expandedArr.length}
@@ -637,6 +666,7 @@ const Projects = () => {
                   currentProject={currentProject}
                   gifUrl={url}
                   title={title}
+                  projectUrl={projectUrl}
                   expandedArr={expandedArr}
                   setExpandedArr={setExpandedArr}
                   projectContainerRef={projectContainerRef}
