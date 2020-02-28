@@ -50,9 +50,9 @@ const about = () => {
       <div id="about__content">
         <h3>About</h3>
         <p>
-          Navy Veteran and self-taught Software Engineer (since 2017) with a
-          keen interest in functional programming, TDD, web & infrastructure
-          security, and cloud services.
+          Navy Veteran and self-taught Full Stack Web Developer (since 2017)
+          with a keen interest in functional programming, TDD, web &
+          infrastructure security, and cloud services.
         </p>
       </div>
     </SectionContainer>
