@@ -159,10 +159,14 @@ const hero = () => {
           </h1>
           <div id="hero_logo-container">
             <div>
-              <GithubLogo />
+              <a href="https://github.com/JamesGood626">
+                <GithubLogo />
+              </a>
             </div>
             <div>
-              <LinkedInLogo />
+              <a href="https://www.linkedin.com/in/james-good-510a0b66/">
+                <LinkedInLogo />
+              </a>
             </div>
           </div>
           <h2 id="hero__secondary-title">Crafting Clean Quality Websites</h2>

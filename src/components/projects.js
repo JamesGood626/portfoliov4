@@ -36,14 +36,29 @@ const projectUrls = [
     title: "Notastical",
     expanded: false,
     projectUrl: "https://www.notastical.com/app/signup",
+    projectText:
+      "Designed and Implemented the UI and Backend business logic using PostgreSQL as the database; \
+                  deployed the Gatsby/React frontend to Netlify and the Elixir/Phoenix backend to AWS Elastic Beanstalk using Docker. \
+                  The intent of this project was to provide myself with a suitable environment for my continual learning and to facilitate \
+                  documenting the process I take while working on various projects.",
   },
   {
     url: projectGifs.bikeShop,
     title: "Bike Shop",
     expanded: false,
     projectUrl: "https://quizzical-lovelace-ae78a3.netlify.com/",
+    projectText:
+      "First time coding something up in VueJS. (GIF yet to come, still need to crop up some images in photoshop.)",
   },
-  { url: projectGifs.budgetSlayer, title: "Budget Slayer", expanded: false },
+  {
+    url: projectGifs.budgetSlayer,
+    title: "Budget Slayer",
+    expanded: false,
+    projectUrl: "https://quizzical-lovelace-ae78a3.netlify.com/",
+    projectText:
+      "This project isn't deployed. It was largely meant to be an exercise in learning the Erlang Actor Model and GenServers.\
+                  Also, as practice implementing tests for the UI using jest, react-testing-library, and end to end testing with Cypress.",
+  },
 ]
 
 const SectionContainer = styled.section`
@@ -542,6 +557,7 @@ const ProjectDisplay = ({
   gifUrl,
   title,
   projectUrl,
+  projectText,
   expandedArr,
   setExpandedArr,
   projectContainerRef,
@@ -620,15 +636,7 @@ const ProjectDisplay = ({
               : "project__display-content project__display-content--contracted"
           }
         >
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidata non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          <p>{projectText}</p>
         </div>
       </ProjectContainer>
     </CarouselItem>
@@ -658,22 +666,25 @@ const Projects = () => {
           <h3>Projects</h3>
           <div id="project__display">
             <Carousel>
-              {expandedArr.map(({ url, title, projectUrl }, index) => (
-                <ProjectDisplay
-                  key={`${title}-${index}`}
-                  projectArrLength={expandedArr.length}
-                  index={index}
-                  currentProject={currentProject}
-                  gifUrl={url}
-                  title={title}
-                  projectUrl={projectUrl}
-                  expandedArr={expandedArr}
-                  setExpandedArr={setExpandedArr}
-                  projectContainerRef={projectContainerRef}
-                  toggleModal={toggleModal}
-                  setToggleModal={setToggleModal}
-                />
-              ))}
+              {expandedArr.map(
+                ({ url, title, projectUrl, projectText }, index) => (
+                  <ProjectDisplay
+                    key={`${title}-${index}`}
+                    projectArrLength={expandedArr.length}
+                    index={index}
+                    currentProject={currentProject}
+                    gifUrl={url}
+                    title={title}
+                    projectUrl={projectUrl}
+                    projectText={projectText}
+                    expandedArr={expandedArr}
+                    setExpandedArr={setExpandedArr}
+                    projectContainerRef={projectContainerRef}
+                    toggleModal={toggleModal}
+                    setToggleModal={setToggleModal}
+                  />
+                )
+              )}
             </Carousel>
             <Dots>
               {expandedArr.map((_, index) => (
