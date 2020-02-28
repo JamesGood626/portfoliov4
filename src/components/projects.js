@@ -54,7 +54,7 @@ const projectUrls = [
     url: projectGifs.budgetSlayer,
     title: "Budget Slayer",
     expanded: false,
-    projectUrl: "https://quizzical-lovelace-ae78a3.netlify.com/",
+    projectUrl: "https://github.com/JamesGood626/budget_backend",
     projectText:
       "This project isn't deployed. It was largely meant to be an exercise in learning the Erlang Actor Model and GenServers.\
                   Also, as practice implementing tests for the UI using jest, react-testing-library, and end to end testing with Cypress.",
